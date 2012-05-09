@@ -3,7 +3,7 @@ require File.expand_path('../lib/tencent/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Enocre Shao"]
-  gem.email         = ["encore.shao@ekohe.com"]
+  gem.email         = ["encore.shao@gmail.com"]
   gem.description   = %q{A wrapper for tencent OAuth2 API}
   gem.summary       = %q{A Simple wrapper for tencent OAuth2 API}
   gem.homepage      = "https://github.com/fmmp3/tencent"
