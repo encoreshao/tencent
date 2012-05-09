@@ -5,19 +5,19 @@ module Tencent
     class Shares < Base
       
       def show(opts={})
-        get 'user/get_info', :params => opts
+        get 'user/get_info', :params => base_params.merge(opts)
       end
       
       def destroy(id)
-        post 't/del_t', :body => {:id => id}
+        post 't/del_t', :body => base_params.merge({:id => id})
       end
       
       def update(status, opts={})
-        post '/t/add_t', :body => {:content => status}.merge(opts)
+        post '/t/add_t', :body => base_params.merge(opts).merge({:content => status})
       end
       
       def upload(status, pic, opts={})
-        post 't/add_pic_t', build_multipart_bodies({:content => status, :pic => pic})
+        post 't/add_pic_t', build_multipart_bodies(base_params.merge(opts).merge({:content => status, :pic => build_image(pic)}))
       end
       
       protected
@@ -51,6 +51,14 @@ module Tencent
             :body => body,
             :headers => {"Content-Type" => "multipart/form-data; boundary=#{boundary}"}
           }
+        end
+        
+        def build_image(file)
+          if file.class == String
+            File.open(file)
+          elsif file.class == File
+            file
+          end
         end
 
     end

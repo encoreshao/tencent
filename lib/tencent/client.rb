@@ -5,8 +5,29 @@ module Tencent
   # The Tencent::Client class
   class Client < OAuth2::Client
   
-    attr_reader :redirect_uri
+    attr_reader :redirect_uri, :openid
     attr_accessor :token
+    
+    # Initializes
+    #
+    # @param [Hash] opts the options to create the client with
+    # @option opts [Hash] :connection_opts ({}) Hash of connection options to pass to initialize Faraday with
+    # @option opts [FixNum] :max_redirects (5) maximum number of redirects to follow
+    # @yield [builder] The Faraday connection builder 
+    def initialize(opts={}, &block)
+      id = Tencent::Config.api_key
+      secret = Tencent::Config.api_secret
+      @redirect_uri = Tencent::Config.redirect_uri
+      @openid = opts.delete(:openid)
+
+      options = {:site          => "https://graph.qq.com/",
+                :authorize_url => "/oauth2.0/authorize",
+                :token_url     => "/oauth2.0/token",
+                :raise_errors  => false,
+                :ssl           => {:verify => false}}.merge(opts)
+
+      super(id, secret, options, &block)
+    end
     
     # Initializes a new Client from a signed_request
     #
@@ -44,30 +65,10 @@ module Tencent
     # @option opts [FixNum] :max_redirects (5) maximum number of redirects to follow
     # @yield [builder] The Faraday connection builder
     def self.from_hash(hash, opts={}, &block)
-      client = self.new(opts, &block)
+      client = self.new(opts.merge({:openid => hash.delete(:openid)}), &block)
       client.get_token_from_hash(hash)
       
       client
-    end
-
-    # Initializes a new Client
-    #
-    # @param [Hash] opts the options to create the client with
-    # @option opts [Hash] :connection_opts ({}) Hash of connection options to pass to initialize Faraday with
-    # @option opts [FixNum] :max_redirects (5) maximum number of redirects to follow
-    # @yield [builder] The Faraday connection builder 
-    def initialize(opts={}, &block)
-      id = Tencent::Config.api_key
-      secret = Tencent::Config.api_secret
-      @redirect_uri = Tencent::Config.redirect_uri
-      
-      options = {:site          => "https://graph.qq.com/",
-                 :authorize_url => "/oauth2.0/authorize",
-                 :token_url     => "/oauth2.0/token",
-                 :raise_errors  => false,
-                 :ssl           => {:verify => false}}.merge(opts)
-          
-      super(id, secret, options, &block)
     end
     
     # Whether or not the client is authorized
@@ -128,16 +129,9 @@ module Tencent
       super
     end
     
-    # The Signed Request Strategy
-    #
-    # @see http://open.weibo.com/wiki/%E7%AB%99%E5%86%85%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97
     def signed_request
       @signed_request ||= Tencent::Strategy::SignedRequest.new(self)
     end
-    
-    #
-    # APIs
-    #
     
     def shares
       @shares ||= Tencent::Interface::Shares.new(self)
