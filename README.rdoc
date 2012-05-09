@@ -1,34 +1,37 @@
-# Tencent
+== Tencent
 
-TODO: A Simple wrapper for tencent OAuth2 API
+A Simple wrapper for tencent OAuth2 API
 
-## Installation
+== Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'tencent', 	git: git://github.com/fmmp3/tencent.git
+    gem 'tencent', 	git: 'git://github.com/fmmp3/tencent.git'
 
 And then execute:
 
     $ bundle
 
-## Usage
+== Usage
 
-TODO: 
+Config your api_key, api_secret and redrect_uri somewhere like development.rb.
 
-	client ||= Tencent::Client.new({:access_token => token, :openid => openid })
-	
-	Tencent Zone
-	client.zones.show
-	
-	Tencent Share
-	client.shares.upload or client.shares.update
-	
+  Tencent::Config.api_key = "111111111"
+  Tencent::Config.api_secret = "3BD5AAC77BFD8C4F597A32221C4BEA3C"
+  Tencent::Config.redirect_uri = "http://www.example.com"
 
-## Contributors
+Ok, now you are ready to enjoy it. Tencent has provided several ways to get your access token, and you can easily get it using Tencent.
 
-* {Encore Shao}[http://github.com/fmmp3]
 
-## Copyright
+== API
+
+You can find them in /lib/tencent/interface:
+
+  $ zones.show
+
+  $ shares.upload(status, file)
+
+
+== Copyright
 
 Copyright (c) 2012 Encore Shao. See LICENSE for details.
