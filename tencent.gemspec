@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/tencent/version', __FILE__)
+$:.push File.expand_path("../lib", __FILE__)
+require "tencent/version"
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Enocre Shao"]
@@ -15,7 +16,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Tencent::VERSION
   
-  gem.add_dependency "oauth2", "~> 0.5.1"
-  gem.add_development_dependency "thoughtbot-shoulda", "~> 2.11.1"
+  gem.add_dependency              "oauth2", "~> 0.5.1"
+  gem.add_development_dependency  "thoughtbot-shoulda", "~> 2.11.1"
   gem.add_development_dependency('rspec-rails')
 end

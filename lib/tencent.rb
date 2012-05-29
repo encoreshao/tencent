@@ -1,5 +1,3 @@
-require "tencent/version"
-
 require 'tencent/client'
 require 'tencent/config'
 require 'tencent/error'
