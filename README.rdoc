@@ -6,7 +6,7 @@ A Simple wrapper for tencent OAuth2 API
 
 Add this line to your application's Gemfile:
 
-    gem 'tencent', 	git: 'git://github.com/fmmp3/tencent.git'
+    gem 'tencent', 	git: 'git://github.com/encoreshao/tencent.git'
 
 And then execute:
 
